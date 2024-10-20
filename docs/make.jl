@@ -1,7 +1,13 @@
 using SkewedAxisFourierAnalysis
 using Documenter
+using Literate
 
-DocMeta.setdocmeta!(SkewedAxisFourierAnalysis, :DocTestSetup, :(using SkewedAxisFourierAnalysis); recursive=true)
+
+# DocMeta.setdocmeta!(SkewedAxisFourierAnalysis, :DocTestSetup, :(using SkewedAxisFourierAnalysis); recursive=true)
+
+threshold = 3_000_000
+
+Literate.markdown("./src/tutorial.jl", "./src")
 
 makedocs(;
     modules=[SkewedAxisFourierAnalysis],
@@ -11,9 +17,14 @@ makedocs(;
         canonical="https://SanjeevKhare.github.io/SkewedAxisFourierAnalysis.jl",
         edit_link="main",
         assets=String[],
+        example_size_threshold=threshold,
+        size_threshold=threshold,
+        size_threshold_warn=threshold
     ),
     pages=[
         "Home" => "index.md",
+        "Tutotial" => "tutorial.md",
+        "API" => "api.md",
     ],
 )
 
