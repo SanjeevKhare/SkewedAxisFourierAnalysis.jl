@@ -1,0 +1,13 @@
+name = "SkewedAxisFourierAnalysis"
+uuid = "1cc4aefd-8e9e-481a-b72a-604c69b4d4ce"
+authors = ["SanjeevKhare <90015656+SanjeevKhare@users.noreply.github.com> and contributors"]
+version = "1.0.0-DEV"
+
+[compat]
+julia = "1.6.7"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]
