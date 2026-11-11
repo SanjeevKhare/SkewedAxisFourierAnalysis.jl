@@ -46,6 +46,16 @@ jobs:
       statuses: write
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '20.12.2'
+          cache: npm
+          cache-dependency-path: docs/package-lock.json
+      - name: Install and verify frontend dependencies
+        working-directory: docs
+        run: |
+          npm ci
+          node -e 'require("rollup"); console.log("Native Rollup dependency loaded successfully")'
       - uses: julia-actions/setup-julia@v2
         with:
           version: '1.11'
