@@ -28,13 +28,18 @@ function shear_image(img, θ)
 end
 
 """
-    build_function_from_sinousoids(opdata, xx, yy, θ)
+    build_sheared_function_from_sinousoids(opdata, xx, yy, θ)
 
-Builds the function from the sinousoids, on x and y axis skewed at an angle θ. The function is evaluated at the points xx and yy, which are the meshgrid points where you want the function to be evaluated.
+Evaluate a real cosine model on Cartesian coordinate arrays `xx` and `yy`.
+The angle `θ` is in degrees. The implemented transform is
+`U = xx + yy*cotd(θ)`, `V = yy*cscd(θ)`; its second direct-space basis vector
+is `(-cosd(θ), sind(θ))`. Avoid angles with zero sine.
 
-# Arguments
-- `opdata`: The sinousoids data. It is a vector of tuples, where each tuple is (i, j, mag, ang), where i and j are the harmonic indices, mag is the magnitude of the harmonic, and ang is the phase of the harmonic.
-
+Each tuple in `opdata` is `(i, j, magnitude, phase)`, with row index `i`,
+column index `j`, and phase in radians. Ordinary non-DC modes contribute
+`2*magnitude*cos(2π*(j*U + i*V) + phase)`. The final tuple must be DC;
+it contributes `magnitude*cos(phase)` without doubling. Coordinate arrays
+must have the same shape and the same real element type as the magnitudes.
 """
 function build_sheared_function_from_sinousoids(opdata::AbstractArray{Tuple{T, T, T1, T1}}, xx::AbstractArray{T1}, yy::AbstractArray{T1}, θ::T2) where {T, T1<:Real, T2<:Real}
     XX, YY = xx .+ yy / tand(θ), yy / sind(θ)
@@ -159,8 +164,9 @@ Map a scientific image to a data array using a colorbar line, and lower and uppe
 - `lowerlimit`: The lower limit of the colorbar.
 - `upperlimit`: The upper limit of the colorbar.
 
-julia
-    image_data = map_image_to_data(img, cb_line, lowerlimit, upperlimit)
+The colorbar vector runs from the upper limit to the lower limit. The current
+implementation uses every other sample and perceptual `colordiff` matching.
+Supply matching RGB channel types and `Float64` limits.
 """
 function map_image_to_data(img::Matrix{RGB{T}}, cb_line::Vector{RGB{T}}, lowerlimit::T1, upperlimit::T1) where {T,T1<:Float64}
     image_data = zeros(Float64, size(img))
@@ -177,16 +183,16 @@ end
 """
     fft_power_analysis(image_data, threshold=0.005)
 
-Perform a power analysis on the Fourier transform of the image data. Based on the threshold, the high power mask is generated. Total power spectral density of frequencies in high power mask is greater than the threshold. 
+Return `(high_power_mask, image_fft_raw)` for real two-dimensional data.
+The raw transform is unnormalized. The mask uses a historical amplitude
+heuristic: sort `2*abs.(image_fft_raw)` in ascending order, find the first
+increment of its normalized cumulative sum strictly above `threshold`,
+and retain amplitudes strictly above the corresponding cutoff.
 
-# Arguments
-- `image_data`: The image data to be analyzed.
-- `threshold=0.005`: The threshold for high power.
-
-# Return value
-- `high_power_mask`: The mask for high power.
-- `image_fft_raw`: The raw Fourier transform of the image data.
-
+`threshold` is not a cumulative retained-power fraction. All-zero input
+or a threshold above every increment has no valid cutoff and is unsupported.
+DC is not automatically preserved. Inspect the mask and compare numeric
+reconstruction errors when choosing a threshold.
 """
 function fft_power_analysis(image_data::AbstractMatrix{T}, threshold=0.005) where {T<:Real}
     image_fft_raw = FFTW.fft(image_data)
@@ -207,12 +213,14 @@ end
 """
     extract_dominant_harmonics(image_data, threshold=0.005)
 
-Extract the dominant harmonics from the image data (2D data). The threshold is used to determine the high power mask. The frequencies are extracted from the high power mask and centered around the zero frequency.
-frequencies and their Fourier coefficients are returned.
+Apply [`fft_power_analysis`](@ref) and return selected tuples
+`(i, j, coefficient)`. Here `i` is the signed row-frequency index, `j` is
+the signed column-frequency index, and each complex coefficient is normalized
+by the total number of input samples. Use ordinary low-frequency modes;
+verify Nyquist-edge modes separately before cosine reconstruction.
 
-# Arguments
-- `image_data`: The image data to be analyzed.
-- `threshold=0.005`: The threshold for high power.
+The threshold follows the amplitude heuristic described by
+[`fft_power_analysis`](@ref), rather than a retained-power percentage.
 """
 function extract_dominant_harmonics(image_data::AbstractMatrix{T}, threshold=0.005) where {T<:Real}
     high_power_mask, image_fft_raw = fft_power_analysis(image_data, threshold)
