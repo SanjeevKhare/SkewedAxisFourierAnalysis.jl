@@ -1,0 +1,70 @@
+:root {
+  --vp-c-brand-1: #5145b8;
+  --vp-c-brand-2: #4338a3;
+  --vp-c-brand-3: #5145b8;
+  --vp-c-brand-soft: rgba(81, 69, 184, .09);
+  --vp-c-bg: #fcfcfa;
+  --vp-c-bg-alt: #f3f3f0;
+  --vp-c-bg-soft: #f2f2f7;
+  --vp-font-family-base: 'Inter', ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --vp-home-hero-name-color: #5145b8;
+  --vp-home-hero-name-background: none;
+}
+.dark {
+  --vp-c-brand-1: #b3aaff;
+  --vp-c-brand-2: #c6bfff;
+  --vp-c-brand-3: #6555cf;
+  --vp-c-brand-soft: rgba(179, 170, 255, .12);
+  --vp-c-bg: #151621;
+  --vp-c-bg-alt: #11121b;
+  --vp-c-bg-soft: #1f2030;
+  --vp-home-hero-name-color: #b3aaff;
+}
+.VPNavBarTitle .logo { width: 30px; height: 30px; }
+.VPNavBarTitle .title { font-size: 14px; letter-spacing: -.025em; }
+.VPHero .name { font-size: 23px; line-height: 1.5; letter-spacing: -.035em; overflow-wrap: anywhere; }
+.VPHero .text { max-width: 640px; font-size: clamp(38px, 4.8vw, 62px); line-height: 1.08; letter-spacing: -.055em; }
+.VPHero .tagline { max-width: 560px; font-size: 19px; line-height: 1.65; }
+.VPHero .image-src { width: 510px; max-width: 100%; max-height: 430px; }
+.VPFeature { background: var(--vp-c-bg); border: 1px solid var(--vp-c-divider); border-radius: 14px; }
+.VPFeature .title { font-size: 18px; }
+.VPFeature .link-text { color: var(--vp-c-brand-1); }
+.vp-doc h1 { letter-spacing: -.04em; line-height: 1.2; }
+.vp-doc h2 { letter-spacing: -.025em; }
+.vp-doc p, .vp-doc li { line-height: 1.8; }
+.vp-doc img { border-radius: 12px; background: #fff; }
+.vp-doc a:focus-visible, .lesson:focus-visible { outline: 3px solid var(--vp-c-brand-1); outline-offset: 4px; }
+.section { max-width: 1152px; margin: 80px auto 0; padding: 0 24px; }
+.eyebrow { color: var(--vp-c-brand-1); font-size: 12px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+.section h2 { font-size: clamp(28px, 3vw, 38px); line-height: 1.2; letter-spacing: -.04em; margin: 14px 0 18px; }
+.intro { max-width: 710px; color: var(--vp-c-text-2); font-size: 17px; line-height: 1.8; }
+.lessons { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; margin-top: 30px; }
+.lesson { display: flex; flex-direction: column; overflow: hidden; border: 1px solid var(--vp-c-divider); border-radius: 16px; background: var(--vp-c-bg); transition: border-color .18s, transform .18s; }
+.lesson:hover { border-color: var(--vp-c-brand-1); transform: translateY(-3px); }
+.lesson img { width: 100%; aspect-ratio: 1.45; object-fit: contain; background: #fff; padding: 10px; }
+.lesson .number { color: var(--vp-c-brand-1); font-size: 11px; font-weight: 700; letter-spacing: .1em; padding: 22px 22px 8px; }
+.lesson strong { font-size: 19px; padding: 0 22px 8px; letter-spacing: -.025em; }
+.lesson .detail { color: var(--vp-c-text-2); font-size: 14px; line-height: 1.7; padding: 0 22px 26px; }
+.method-strip { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: center; padding-top: 32px; padding-bottom: 64px; }
+.method-strip img { width: 100%; border-radius: 16px; background: #fff; }
+.method-strip a { color: var(--vp-c-brand-1); text-decoration: underline; text-underline-offset: 4px; }
+.closing { border-top: 1px solid var(--vp-c-divider); padding: 28px 0 46px; color: var(--vp-c-text-2); font-size: 14px; line-height: 1.8; }
+.closing a { color: var(--vp-c-brand-1); }
+.jldocstring.custom-block { border: 1px solid var(--vp-c-divider); color: var(--vp-c-text-1); overflow: hidden; }
+.jldocstring summary { cursor: pointer; font-weight: 600; }
+.jldocstring .source-link { float: right; font-size: 12px; }
+@media (min-width: 960px) { .VPHero { padding-top: 80px !important; padding-bottom: 64px !important; } }
+@media (max-width: 767px) {
+  .VPNavBarTitle .title { font-size: 11px; }
+  .VPNavBarTitle .logo { width: 24px; height: 24px; margin-right: 6px; }
+  .VPHero .name { font-size: 18px; }
+  .VPHero .tagline { font-size: 17px; }
+  .VPHero .image-src { width: 330px; max-width: 100%; max-height: 280px; }
+  .VPHero .image-container { width: 330px; height: 280px; }
+  .VPHero .image { margin-bottom: 24px; }
+  .section { margin-top: 48px; }
+  .lessons, .method-strip { grid-template-columns: 1fr; }
+  .method-strip { gap: 24px; }
+  .lesson img { max-height: 280px; }
+}
+@media (prefers-reduced-motion: reduce) { .lesson { transition: none; } .lesson:hover { transform: none; } }

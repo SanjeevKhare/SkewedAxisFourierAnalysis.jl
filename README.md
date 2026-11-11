@@ -1,12 +1,35 @@
 # SkewedAxisFourierAnalysis
 
-[![Stable](https://img.shields.io/badge/docs-stable-blue.svg)](https://SanjeevKhare.github.io/SkewedAxisFourierAnalysis.jl/stable/)
-[![Dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://SanjeevKhare.github.io/SkewedAxisFourierAnalysis.jl/dev/)
+[![Documentation](https://img.shields.io/badge/docs-public-5145b8.svg)](https://sanjeevkhare.github.io/SkewedAxisFourierAnalysis.jl/dev/)
 [![Build Status](https://github.com/SanjeevKhare/SkewedAxisFourierAnalysis.jl/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/SanjeevKhare/SkewedAxisFourierAnalysis.jl/actions/workflows/CI.yml?query=branch%3Amain)
 
+Fourier analysis of real, two-dimensional lattice data on skewed axes. Digitize
+scientific images against a supplied colorbar, extract a compact set of Fourier
+coefficients, and evaluate the resulting cosine model on a chosen coordinate grid.
 
-This package provides tool to perform Fourier analysis of crystal lattice data, which is typically in skewed axis. It provides tools to analyze image data of crystal lattices, by transforming them and digitizing them.  Digitization is done by reading the colorbar and finding the perceptual color closest to each pixel of the image. This process is slow but doing so, allows to accurately digitize scientific plots, which can have custom colorbars.
+**[Read the documentation](https://sanjeevkhare.github.io/SkewedAxisFourierAnalysis.jl/dev/)** ·
+[Get started](https://sanjeevkhare.github.io/SkewedAxisFourierAnalysis.jl/dev/guide/getting-started.html) ·
+[Visual tutorials](https://sanjeevkhare.github.io/SkewedAxisFourierAnalysis.jl/dev/tutorials/synthetic.html) ·
+[API reference](https://sanjeevkhare.github.io/SkewedAxisFourierAnalysis.jl/dev/reference/api.html)
 
-The Fourier coefficients are computed using the FFT algorithm. They can then be filtered as per requirement. Percentage of power spectral density can be provided to capture significant features of the image. It can be reconstructed back on skewed axs to visualize the filtered image in Python or Julia.
+```julia
+using Pkg
+Pkg.add(url = "https://github.com/SanjeevKhare/SkewedAxisFourierAnalysis.jl")
+import SkewedAxisFourierAnalysis as FA
+```
 
-Currently, this package supports only 2D data.
+Use Julia 1.11 or newer for the documented workflow. The tutorials cover known-mode
+recovery, colorbar digitization, and skewed-coordinate reconstruction, with figures
+and numerical assertions generated from the displayed Julia code.
+
+The current Fourier filter uses an amplitude-threshold heuristic; its threshold
+is not a guaranteed retained-power fraction. Image digitization is approximate
+and depends on the colorbar, crop, and image quality. See the documentation for
+coordinate conventions and current edge cases.
+
+To build the website locally:
+
+```sh
+julia --project=docs -e 'using Pkg; Pkg.develop(path=pwd()); Pkg.instantiate()'
+julia --project=docs docs/make.jl
+```

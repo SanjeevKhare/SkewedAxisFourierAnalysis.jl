@@ -2,3 +2,12 @@
 /docs/Manifest.toml
 /docs/build/
 .DS_Store
+# Documentation products (rebuilt from docs/examples and docs/src).
+/docs/src/tutorials/synthetic.md
+/docs/src/tutorials/digitization.md
+/docs/src/tutorials/reconstruction.md
+/docs/src/assets/figures/
+/docs/src/assets/examples/
+/docs/node_modules/
+
+/docs/src/public/downloads/
